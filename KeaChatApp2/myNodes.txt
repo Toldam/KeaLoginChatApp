@@ -1,0 +1,161 @@
+KEA chat app:
+- Login system
+    Login
+        write to db
+            usernname
+            password
+    
+    create user
+        read from db
+            Username
+            password
+    
+    Authentication:
+        Passport: (http://www.passportjs.org/)
+    encryption:
+        DCrypt
+
+
+
+USER:
+    name
+    email
+    username
+    password
+
+    
+
+Database: 
+    MongoDB:
+        1. MongoDB, is a noSQL database. 
+        2. Data is stored as documents.
+        3. Uses JSon like syntax.  ()
+        4. easy to scale
+        5. mostly faster than sql
+
+    Reason:
+        1. for a simple like program as a         
+
+links used: 
+    https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
+    https://www.youtube.com/watch?v=FwMwO8pXfq0 (How to Install MongoDB on Windows 10)
+    https://www.youtube.com/watch?v=pWbMrx5rVBE (MongoDB In 30 Minutes)
+    https://www.youtube.com/watch?v=hb26tQPmPl4 (How to Build User Login System Using Nodejs | Nodejs & its Installation)
+    https://www.youtube.com/watch?v=8Y6mWhcdSUM (Build a Chat App With MongoDB & Socket.io)
+    http://www.passportjs.org/docs/
+    
+
+    -------
+    HOW I DID IT
+    1. install Nodejs, MongoDB.
+
+    2. install express and express-generator globally by doing:
+        npm install -g express
+        npm install -g express-generator
+
+    3. created a folder and called it KeaChatApp
+
+    4. while being in the folder, run the command "express" in the terminal
+        wich creates a bunch of files and folder:
+            - being
+            - public
+            - routes
+            - views
+            app.js
+            package.json
+
+    5. I added a bunch of dependencies to our package.json:
+        "mongodb": "*",
+        "mongoose": "*",
+        "connect-flash": "*",
+        "express-messages": "*",
+        "express-validator": "*",
+        "express-session": "*",
+        "passport": "*",
+        "passport-local": "*",
+        "passport-http": "*",
+        "multer": "*"    
+
+    6. Run a "npm install" to get our node_modules
+
+    7. add those modules in the app.js also:
+        ...
+        const session       = require('express-session');
+        const passport      = require('passport');
+
+        const LocalStrategy = require('passport-local').Strategy;
+        const multer        = require('multer');
+        const upload        = multer({dest:'./uploads'});
+        const flash         = require('connect-flash');
+        const mongo         = require('mongodb');
+        const mongoose      = require('mongoose');
+
+    8. add middleware:
+        // Handle Sessions
+        app.use(session({
+        secret: 'secret',
+        saveUninitialized: true,
+        resave: true
+        }));
+        ...
+
+        // Passport (auth system)
+        app.use(passport.initialize());
+        app.use(passport.session());
+        ...
+
+        // Validator
+        // In this example, the formParam value is going to get morphed into form body format useful for printing.
+        app.use(expressValidator({
+        errorFormatter: function(param, msg, value) {
+            var namespace = param.split('.')
+            , root    = namespace.shift()
+            , formParam = root;
+
+            while(namespace.length) {
+            formParam += '[' + namespace.shift() + ']';
+            }
+            return {
+            param : formParam,
+            msg   : msg,
+            value : value
+            };
+        }
+        }));
+        ...
+
+        // The express-messages module provides flash notification rendering.
+        app.use(require('connect-flash')());
+        app.use(function (req, res, next) {
+        res.locals.messages = require('express-messages')(req, res);
+        next();
+        }); 
+
+    9. type "npm start" in the terminal
+    
+    10. go to http://localhost:3000 in your browser
+        it should say: 
+            Express
+            Welcome to Express
+    
+    11. Go to https://getbootstrap.com/docs/4.1/getting-started/download/#bootstrapcdn and download bootstrap
+
+    12. open the folder. Open another folder with your project in. 
+        1. in your project folder open "public"
+        2. drag files form bootstrap folder in your project folder:
+            bootstrap.css   -> stylesheets
+            bootstrap.js    -> javascript
+    
+    13. change the layout for the menu in KeaChatApp\views\layout.jade
+
+    14. changes the routes in KeaChatApp\routes\users.js
+
+    15. create the loginform
+
+
+
+
+        
+
+
+    
